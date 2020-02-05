@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .models import *
 from rest_framework.decorators import api_view
 import json
+from io import StringIO
 
 # instantiate pusher
 # pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
@@ -26,7 +27,8 @@ def initialize(request):
 @api_view(["GET"])
 def rooms(request):
     rooms = list(Map.objects.values())
-    return JsonResponse({'rooms': rooms}, safe=True)
+    array = json.loads(rooms[0]['map_string'])
+    return JsonResponse(array, safe=False)
 
 # @csrf_exempt
 @api_view(["POST"])
