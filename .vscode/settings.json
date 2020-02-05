@@ -1,4 +1,6 @@
 {
     "python.pythonPath": "/home/matt/.local/share/virtualenvs/cs-bw1-backend-nBc97QhX/bin/python",
-    "python.linting.enabled": false
+    "python.linting.enabled": false,
+    "python.linting.pycodestyleEnabled": false,
+    "python.linting.pylintEnabled": true
 }
