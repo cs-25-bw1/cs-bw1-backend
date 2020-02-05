@@ -12,13 +12,13 @@ titles = [
 
 
 def create_title():
-str = ""
-for i in range(3):
-num = randrange(0, len(titles[i]))
-if len(str) is 0:
-str += titles[i][num]
-elif i == 2:
-str += " of " + titles[i][num]
-else:
-str += " " + titles[i][num]
-return str 
+    str = ""
+    for i in range(3):
+        num = randrange(0, len(titles[i]))
+    if len(str) is 0:
+        str += titles[i][num]
+    elif i == 2:
+        str += " of " + titles[i][num]
+    else:
+        str += " " + titles[i][num]
+    return str 
