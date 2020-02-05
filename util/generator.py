@@ -31,8 +31,8 @@ class World:
         # create a starting room at origin
         room = Room()
         room.save()
-        room.x = 12
-        room.y = 12
+        room.x = size_x // 2
+        room.y = size_y // 2
         number_rooms_created = 1
         self.grid[room.x][room.y] = room
         list_of_rooms.append(room)
@@ -89,10 +89,10 @@ class World:
                     new_room.y = y
                 if direction == 's':
                     new_room.x = x
-                    new_room.y = y - 1
+                    new_room.y = y + 1
                 if direction == 'n':
                     new_room.x = x
-                    new_room.y = y + 1
+                    new_room.y = y - 1
                 # update grid and list of rooms
                 self.grid[new_room.x][new_room.y] = new_room
                 list_of_rooms.append(new_room)
@@ -122,7 +122,7 @@ class World:
 Room.objects.all().delete()
 w = World()
 num_rooms = 100
-width = 25
-height = 25
+width = 16
+height = 16
 w.generate_rooms(width, height, num_rooms, Room)
 w.print_rooms()
