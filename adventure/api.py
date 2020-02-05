@@ -25,7 +25,7 @@ def initialize(request):
 @csrf_exempt
 @api_view(["GET"])
 def rooms(request):
-    rooms = list(Room.objects.values())
+    rooms = list(Map.objects.values())
     return JsonResponse({'rooms': rooms}, safe=True)
 
 # @csrf_exempt
