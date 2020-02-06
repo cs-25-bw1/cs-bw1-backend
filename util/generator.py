@@ -46,6 +46,24 @@ def random_items(random):
 
     return item_list
 
+def make_quotes(random):
+    quotes = []
+    with open('./util/uparsed-quotes.txt') as f:
+        quote = f.readline()
+        while quote:
+            author = f.readline()
+            if not author:
+                break
+            blank = f.readline()
+            if not blank:
+                break
+            quotes.append(quote + author)
+            quote = f.readline()
+
+    random.shuffle(quotes)
+    return quotes
+
+
 
 class World:
     def __init__(self):
@@ -54,7 +72,7 @@ class World:
         self.height = 0
 
 
-    def generate_rooms(self, size_x, size_y, num_rooms, Room, create_title, random_items):
+    def generate_rooms(self, size_x, size_y, num_rooms, Room, create_title, random_items, quotes):
         '''
         Fill up the grid, bottom to top, in a zig-zag pattern
         '''
@@ -72,6 +90,7 @@ class World:
         # create a starting room at origin
         room = Room()
         room.title = create_title(random)
+        room.description = quotes[0]
         room.items = random_items(random)
         room.save()
         room.x = size_x // 2
@@ -80,6 +99,7 @@ class World:
         self.grid[room.x][room.y] = room
         list_of_rooms.append(room)
         # until we have enough rooms
+        i =1 # counter for quote iteration
         while number_rooms_created < num_rooms:
             # pick an existing room
             current_room = random.choice(list_of_rooms)
@@ -123,6 +143,8 @@ class World:
                 options.remove(direction)
                 new_room = Room()
                 new_room.title = create_title(random)
+                new_room.description = quotes[i]
+                i += 1
                 new_room.items = random_items(random)
                 new_room.save()
                 number_rooms_created += 1
@@ -166,10 +188,11 @@ class World:
 
 Room.objects.all().delete()
 w = World()
-num_rooms = 100
+num_rooms = 128
 width = 16
 height = 16
 
-w.generate_rooms(width, height, num_rooms, Room, create_title, random_items)
+quotes = make_quotes(random)
+w.generate_rooms(width, height, num_rooms, Room, create_title, random_items, quotes)
 w.print_rooms()
 
