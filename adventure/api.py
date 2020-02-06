@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from .models import *
 from rest_framework.decorators import api_view
 import json
-from io import StringIO
 
 # instantiate pusher
 # pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
@@ -26,9 +25,37 @@ def initialize(request):
 @csrf_exempt
 @api_view(["GET"])
 def rooms(request):
-    rooms = list(Map.objects.values())
-    array = json.loads(rooms[0]['map_string'])
-    return JsonResponse(array, safe=False)
+    # rooms = list(Map.objects.values())
+    # array = json.loads(rooms[0]['map_string'])
+    # return JsonResponse(array, safe=False)
+    world = {}
+    rooms = Room.objects.all()
+    for room in rooms:
+
+        exits = {}
+        if room.n_to != 0:
+            exits['n'] = room.n_to
+        if room.s_to != 0:
+            exits['s'] = room.s_to
+        if room.e_to != 0:
+            exits['e'] = room.e_to
+        if room.w_to != 0:
+            exits['w'] = room.w_to
+
+
+        items = json.loads(room.items)
+        
+    # array = json.loads(rooms[0]['map_string'])
+    # return JsonResponse(array, safe=False)
+
+        # items = []
+        # if int(room.id) % 2 == 0:
+        #     items.append('candle')
+        # if int(room.id) % 5 == 0:
+        #     items.append('marble')
+
+        world[room.id] = [{"x": room.x,"y": room.y}, exits, {'title': room.title}, {'description': room.description}, {'items': items}]
+    return JsonResponse(world, safe=True)
 
 # @csrf_exempt
 @api_view(["POST"])

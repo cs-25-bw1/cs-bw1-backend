@@ -5,6 +5,47 @@
 # to see the world.
 
 from adventure.models import Room
+import random
+
+def create_title(random):
+    titles = ([
+[
+"Cloudy", "Dusty", "Warm", "Crumbling", "Dank", "Musty", "Moldy", "Funerial", "Dread", "Lost", "Black", "Dark", "Grand", "Narrow", "Lost", "Forsaken", "Gauntlet", "Mighty", "Tormented", "Demented", "Brick", "Rusty", "Decaying", "Reeking"
+],
+[
+"Great Room", "Alter", "Hallway", "Chamber", "Cavern", "Expanse", "Overlook", "Foyer", "Library", "Laboratory", "Crypt", "Catacombs", "Archway", "Shrine", "Sanctum", "Lair", "Temple", "Halls", "Cave", "Divide", "Quicksand", "Realm"
+],
+[
+"Death", "Annihiliation", "Torture", "Tranquility", "Secrets", "Chaos", "Desecration", "Blood", "Destruction", "Despair", "Ascendance", "Mortality"
+]
+])
+
+    title = ""
+    for i in range(3):
+        if i == 0:
+            first_word = random.choice(titles[i])
+            title += first_word
+        elif i == 1:
+            second_word = random.choice(titles[i])
+            title += " " + second_word + " of"
+        else:
+            third_word = random.choice(titles[i])
+            title += " " + third_word
+    return title
+
+
+def random_items(random):
+    import json
+    items = (['candle', 'compass', 'quill', 'ink', 'scroll', 'note', 'book', 'matches', 'toad', 'llama', 'broken glass', 'beanie'])
+
+    # Select a random number from 1 to 5.
+    num = random.randint(0, 5)
+    # Select a sample of items from the list.
+    item_list = random.sample(items, num)
+    item_list = json.dumps(item_list)
+
+    return item_list
+
 
 class World:
     def __init__(self):
@@ -13,7 +54,7 @@ class World:
         self.height = 0
 
 
-    def generate_rooms(self, size_x, size_y, num_rooms, Room):
+    def generate_rooms(self, size_x, size_y, num_rooms, Room, create_title, random_items):
         '''
         Fill up the grid, bottom to top, in a zig-zag pattern
         '''
@@ -30,6 +71,8 @@ class World:
 
         # create a starting room at origin
         room = Room()
+        room.title = create_title(random)
+        room.items = random_items(random)
         room.save()
         room.x = size_x // 2
         room.y = size_y // 2
@@ -79,6 +122,8 @@ class World:
                 direction = random.choice(options)
                 options.remove(direction)
                 new_room = Room()
+                new_room.title = create_title(random)
+                new_room.items = random_items(random)
                 new_room.save()
                 number_rooms_created += 1
                 if direction == 'w':
@@ -124,5 +169,5 @@ w = World()
 num_rooms = 100
 width = 16
 height = 16
-w.generate_rooms(width, height, num_rooms, Room)
+w.generate_rooms(width, height, num_rooms, Room, create_title, random_items)
 w.print_rooms()
