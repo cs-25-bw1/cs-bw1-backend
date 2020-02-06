@@ -42,11 +42,18 @@ def rooms(request):
         if room.w_to != 0:
             exits['w'] = room.w_to
 
-        items = []
-        if int(room.id) % 2 == 0:
-            items.append('candle')
-        if int(room.id) % 5 == 0:
-            items.append('marble')
+
+        items = json.loads(room.items)
+        
+    # array = json.loads(rooms[0]['map_string'])
+    # return JsonResponse(array, safe=False)
+
+        # items = []
+        # if int(room.id) % 2 == 0:
+        #     items.append('candle')
+        # if int(room.id) % 5 == 0:
+        #     items.append('marble')
+
 
         world[room.id] = [{"x": room.x,"y": room.y}, exits, {'title': room.title}, {'description': room.description}, {'items': items}]
     return JsonResponse(world, safe=True)
