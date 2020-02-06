@@ -12,6 +12,9 @@ class Room(models.Model):
     s_to = models.IntegerField(default=0)
     e_to = models.IntegerField(default=0)
     w_to = models.IntegerField(default=0)
+    x = models.IntegerField(default=-1)
+    y = models.IntegerField(default=-1)
+
     def connectRooms(self, destinationRoom, direction):
         destinationRoomID = destinationRoom.id
         try:
@@ -51,6 +54,9 @@ class Player(models.Model):
         except Room.DoesNotExist:
             self.initialize()
             return self.room()
+
+class Map(models.Model):
+    map_string = models.CharField(max_length=20000, default="DEFAULT DESCRIPTION")
 
 @receiver(post_save, sender=User)
 def create_user_player(sender, instance, created, **kwargs):
