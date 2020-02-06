@@ -19,8 +19,7 @@ def initialize(request):
     player_id = player.id
     uuid = player.uuid
     room = player.room()
-    # location = {'x': room.x, 'y': room.y}
-    location = [room.x, room.y]
+    location = {'x': room.x, 'y': room.y}
     items = json.loads(room.items)
     players = room.playerNames(player_id)
     return JsonResponse({'uuid': uuid, 'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players, 'items': items, 'location': location}, safe=True)
@@ -58,8 +57,7 @@ def rooms(request):
         #     items.append('marble')
 
 
-        # world[room.id] = [{"x": room.x,"y": room.y}, exits, {'title': room.title}, {'description': room.description}, {'items': items}]
-        world[room.id] = [[room.x, room.y], exits, {'title': room.title}, {'description': room.description}, {'items': items}]
+        world[room.id] = [{"x": room.x,"y": room.y}, exits, {'title': room.title}, {'description': room.description}, {'items': items}]
     return JsonResponse(world, safe=True)
 
 # @csrf_exempt
