@@ -54,6 +54,7 @@ def rooms(request):
         # if int(room.id) % 5 == 0:
         #     items.append('marble')
 
+
         world[room.id] = [{"x": room.x,"y": room.y}, exits, {'title': room.title}, {'description': room.description}, {'items': items}]
     return JsonResponse(world, safe=True)
 

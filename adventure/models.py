@@ -57,7 +57,7 @@ class Player(models.Model):
             return self.room()
 
 class Map(models.Model):
-    map_string = models.CharField(max_length=10000, default="DEFAULT DESCRIPTION")
+    map_string = models.CharField(max_length=20000, default="DEFAULT DESCRIPTION")
 
 @receiver(post_save, sender=User)
 def create_user_player(sender, instance, created, **kwargs):
