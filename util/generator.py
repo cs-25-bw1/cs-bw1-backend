@@ -20,10 +20,10 @@ class World:
         import random
 
         # Initialize the grid
-        self.grid = [None] * size_y
+        self.grid = [None] * size_x
         self.width = size_x
         self.height = size_y
-        for i in range( len(self.grid) ):
+        for i in range( size_x ):
             self.grid[i] = [None] * size_x
 
         list_of_rooms = []
@@ -50,11 +50,11 @@ class World:
                 options.remove('w')
             if current_room.x == size_x - 1:
                 options.remove('e')
-            # for room.y: if y == 0, no south; if y == size_y - 1, no north
+            # for room.y: if y == 0, no north; if y == size_y - 1, no south
             if current_room.y == 0:
-                options.remove('s')
-            if current_room.y == size_y - 1:
                 options.remove('n')
+            if current_room.y == size_y - 1:
+                options.remove('s')
             # for the directions remaining check if space is open - remove from list if not open
             # if west: check self.grid[x-1][y] -> if not None, remove west
             if 'w' in options and self.grid[x-1][y]is not None:
@@ -62,11 +62,11 @@ class World:
             # if east: check self.grid[x+1][y] -> if not None, remove east
             if 'e' in options and self.grid[x+1][y] is not None:
                 options.remove('e')
-            # if south: check self.grid[x][y-1] -> if not None, remove south
-            if 's' in options and self.grid[x][y-1]is not None:
+            # if south: check self.grid[x][y+1] -> if not None, remove south
+            if 's' in options and self.grid[x][y+1]is not None:
                 options.remove('s')
             # if north: check self.grid[x][y+1] -> if not None, remove north
-            if 'n' in options and self.grid[x][y+1]is not None:
+            if 'n' in options and self.grid[x][y-1]is not None:
                 options.remove('n')
 
             # if zero paths, continue
@@ -111,11 +111,11 @@ class World:
         Print the rooms in room_grid in ascii characters.
         '''
         for row in self.grid:
-            for space in row:
-                if space is None:
-                    print('. ', end='')
+            for room in row:
+                if room is None:
+                    print(' . ', end='')
                 else:
-                    print('+ ', end='')
+                    print(' @ ', end='')
             print()
 
 
@@ -125,4 +125,4 @@ num_rooms = 100
 width = 16
 height = 16
 w.generate_rooms(width, height, num_rooms, Room)
-w.print_rooms()
+# w.print_rooms()
