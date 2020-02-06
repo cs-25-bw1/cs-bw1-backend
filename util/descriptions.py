@@ -1,3 +1,5 @@
+import random
+
 titles = [
 [
 "Cloudy", "Dusty", "Warm", "Crumbling", "Dank", "Musty", "Moldy", "Funerial", "Dread", "Lost", "Black", "Dark", "Grand", "Narrow", "Lost", "Forsaken", "Gauntlet", "Mighty", "Tormented", "Demented", "Brick", "Rusty", "Decaying", "Reeking"
@@ -12,13 +14,31 @@ titles = [
 
 
 def create_title():
-    str = ""
+    title = ""
     for i in range(3):
-        num = randrange(0, len(titles[i]))
-    if len(str) is 0:
-        str += titles[i][num]
-    elif i == 2:
-        str += " of " + titles[i][num]
-    else:
-        str += " " + titles[i][num]
-    return str 
+        if i == 0:
+            first_word = random.choice(titles[i])
+            title += first_word
+        elif i == 1:
+            second_word = random.choice(titles[i])
+            title += " " + second_word + " of"
+        else:
+            third_word = random.choice(titles[i])
+            title += " " + third_word
+    return title
+
+
+
+# You'll see any of these items in a room.
+
+items = ['candle', 'compass', 'quill', 'ink', 'scroll', 'note', 'book', 'matches', 'toad', 'llama', 'broken glass', 'beanie']
+
+
+
+def random_items():
+    # Select a random number from 1 to 5.
+    num = random.randint(0, 5)
+    # Select a sample of items from the list.
+    item_list = random.sample(items, num)
+
+    return item_list
