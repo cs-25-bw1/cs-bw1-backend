@@ -21,9 +21,11 @@ def initialize(request):
     room = player.room()
     location = {'x': room.x, 'y': room.y}
     items = json.loads(room.items)
-    items = ', '.join(items)
+    items = [', '.join(items)]
+    if len(items) == 0:
+        items = ["This room is empty."]
     players = room.playerNames(player_id)
-    players = ', '.join(players)
+    players = [', '.join(players)]
     return JsonResponse({'uuid': uuid, 'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players, 'items': items, 'location': location}, safe=True)
 
 @csrf_exempt
@@ -74,7 +76,9 @@ def move(request):
     direction = data['direction']
     room = player.room()
     items = json.loads(room.items)
-    items = ', '.join(items)
+    items = [', '.join(items)]
+    if len(items) == 0:
+        items = ["This room is empty."]
     nextRoomID = None
     if direction == "n":
         nextRoomID = room.n_to
@@ -87,11 +91,13 @@ def move(request):
     if nextRoomID is not None and nextRoomID > 0:
         nextRoom = Room.objects.get(id=nextRoomID)
         new_items = json.loads(nextRoom.items)
-        new_items = ', '.join(new_items)
+        new_items = [', '.join(new_items)]
+        if len(new_items) == 0:
+        new_items = ["This room is empty."]
         player.currentRoom=nextRoomID
         player.save()
         players = nextRoom.playerNames(player_id)
-        players = ', '.join(players)
+        players = [', '.join(players)]
         currentPlayerUUIDs = room.playerUUIDs(player_id)
         nextPlayerUUIDs = nextRoom.playerUUIDs(player_id)
         # for p_uuid in currentPlayerUUIDs:
@@ -101,7 +107,7 @@ def move(request):
         return JsonResponse({"x": nextRoom.x,"y": nextRoom.y, 'name':player.user.username, 'title':nextRoom.title, 'description':nextRoom.description, 'players':players, "items": new_items, 'error_msg':""}, safe=True)
     else:
         players = room.playerNames(player_id)
-        players = ', '.join(players)
+        players = [', '.join(players)]
         return JsonResponse({'x': room.x, 'y': room.y, 'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players, "items": items, 'error_msg':"You cannot move that way."}, safe=True)
 
 
