@@ -4,7 +4,7 @@
 # procedural generation algorithm and use print_rooms()
 # to see the world.
 
-from adventure.models import Room
+from adventure.models import Player, Room
 import random
 
 def create_title(random):
@@ -173,18 +173,6 @@ class World:
             # remove current room to get better pathing
             list_of_rooms.remove(current_room)
 
-    def print_rooms(self):
-        '''
-        Print the rooms in room_grid in ascii characters.
-        '''
-        for row in self.grid:
-            for room in row:
-                if room is None:
-                    print(' . ', end='')
-                else:
-                    print(' @ ', end='')
-            print()
-
 
 Room.objects.all().delete()
 w = World()
@@ -194,5 +182,9 @@ height = 16
 
 quotes = make_quotes(random)
 w.generate_rooms(width, height, num_rooms, Room, create_title, random_items, quotes)
-w.print_rooms()
+
+players=Player.objects.all()
+for p in players:
+  p.currentRoom=Room.objects.all().first().id
+  p.save()
 
