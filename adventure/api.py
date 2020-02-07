@@ -93,7 +93,7 @@ def move(request):
         new_items = json.loads(nextRoom.items)
         new_items = [', '.join(new_items)]
         if len(new_items) == 0:
-        new_items = ["This room is empty."]
+            new_items = ["This room is empty."]
         player.currentRoom=nextRoomID
         player.save()
         players = nextRoom.playerNames(player_id)
